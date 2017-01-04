@@ -46,17 +46,30 @@ services:
       vault-net:
         ipv4_address: 172.42.10.4
 
-  vault:
+  vault1:
     image: vault
     ports:
       - "8200:8200"
     cap_add:
       - IPC_LOCK
     volumes:
-      - ./config:/vault/config
+      - ./vault1:/vault/config
     networks:
       vault-net:
         ipv4_address: 172.42.10.5
+    depends_on:
+      - consul-client
+    command: server
+
+  vault2:
+    image: vault
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ./vault2:/vault/config
+    networks:
+      vault-net:
+        ipv4_address: 172.42.10.6
     depends_on:
       - consul-client
     command: server

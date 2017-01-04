@@ -6,5 +6,6 @@ backend "consul" {
 
 listener "tcp" {
   address = "172.42.10.5:8200"
+  cluster_address = "172.42.10.5:8201"
   tls_disable = 1
 }
