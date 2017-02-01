@@ -41,7 +41,7 @@ services:
     depends_on:
       - consul1
     ports:
-      - "8500:8500"
+      - "9500:8500"
     networks:
       vault-net:
         ipv4_address: 172.42.10.4
@@ -63,6 +63,8 @@ services:
 
   vault2:
     image: vault
+    ports:
+      - "9200:8200"
     cap_add:
       - IPC_LOCK
     volumes:
