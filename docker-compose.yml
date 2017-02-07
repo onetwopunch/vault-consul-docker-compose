@@ -30,21 +30,32 @@ services:
     image: consul
     command: agent -server -retry-join 172.42.10.1 -bind 172.42.10.3
     depends_on:
-      - consul1
+      - consul2
     networks:
       vault-net:
         ipv4_address: 172.42.10.3
 
-  consul-client:
+  client1:
     image: consul
-    command: agent -client=0.0.0.0 -ui -retry-join 172.42.10.1 -bind 172.42.10.4
+    command: agent -client=0.0.0.0 -ui -retry-join 172.42.10.1 -bind 172.42.10.10
     depends_on:
-      - consul1
+      - consul3
     ports:
-      - "9500:8500"
+      - "18500:8500"
     networks:
       vault-net:
-        ipv4_address: 172.42.10.4
+        ipv4_address: 172.42.10.10
+
+  client2:
+    image: consul
+    command: agent -client=0.0.0.0 -ui -retry-join 172.42.10.1 -bind 172.42.10.11
+    depends_on:
+      - consul3
+    ports:
+      - "18501:8500"
+    networks:
+      vault-net:
+        ipv4_address: 172.42.10.11
 
   vault1:
     image: vault
@@ -58,7 +69,7 @@ services:
       vault-net:
         ipv4_address: 172.42.10.5
     depends_on:
-      - consul-client
+      - client1
     command: server
 
   vault2:
@@ -73,5 +84,5 @@ services:
       vault-net:
         ipv4_address: 172.42.10.6
     depends_on:
-      - consul-client
+      - client2
     command: server
